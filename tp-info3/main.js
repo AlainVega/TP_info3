@@ -38,7 +38,7 @@ eje = new THREE.Line( ejeGeometria, ejeMaterial );
 scene.add( eje );
 
 // Base rectangular (el piso que sostiene las carreteras)
-const geometry = new THREE.BoxGeometry( 1, 2, 30 );
+const geometry = new THREE.BoxGeometry( 1, 10, 30 );
 const material = new THREE.MeshBasicMaterial( { color: 0x444444 } );
 const baseRectangular = new THREE.Mesh( geometry, material );
 
@@ -70,6 +70,35 @@ pilar.translateX(-10)
 
 scene.add( pilar );
 
+// Base del pilar (la "piramide" de donde se levanta el pilar)
+let basePilarGeometria = new THREE.BoxGeometry( 10, 1, 10 ) 
+let basePilarMaterial = new THREE.MeshBasicMaterial( { color: 0x848484 } );
+let meshBasePilar = new THREE.Mesh(basePilarGeometria, basePilarMaterial)
+
+const basePilar = new THREE.Object3D()
+
+basePilar.translateY(-20)
+
+basePilar.add(meshBasePilar)
+
+basePilarGeometria = new THREE.BoxGeometry( 7.5, 1, 7.5 ) 
+basePilarMaterial = new THREE.MeshBasicMaterial( { color: 0x444444 } );
+let meshBasePilar2 = new THREE.Mesh(basePilarGeometria, basePilarMaterial)
+
+meshBasePilar2.translateY(1)
+
+basePilar.add(meshBasePilar2)
+
+basePilarGeometria = new THREE.BoxGeometry( 5, 1, 5 ) 
+basePilarMaterial = new THREE.MeshBasicMaterial( { color: 0x848484 } );
+let meshBasePilar3 = new THREE.Mesh(basePilarGeometria, basePilarMaterial)
+
+meshBasePilar3.translateY(2)
+
+basePilar.add(meshBasePilar3)
+
+scene.add(basePilar)
+
 const x0 = 10
 const y0 = 5
 const z0 = 15
@@ -86,13 +115,14 @@ camera.lookAt(new THREE.Vector3(0, 0, 0));
 function animate() {
 	requestAnimationFrame( animate );
 
+  // Para que se mueva solo:
   camera.position.x = radio*Math.cos(phi)
   camera.position.z = radio*Math.sin(phi)
-  phi += 0.01
+  phi += 0.01 //plano paralelo a XoZ
 
   camera.position.z = radio*Math.cos(rho)
   camera.position.y = radio*Math.sin(rho)
-  rho += 0.01
+  rho += 0.01 // plano paralelo a ZoY
 
   camera.lookAt(new THREE.Vector3(0, 0, 0));
 	renderer.render( scene, camera );
@@ -103,25 +133,43 @@ if ( WebGL.isWebGLAvailable() ) {
 	// Initiate function or other initializations here
 	animate();
 
+  document.addEventListener("keydown", onDocumentKeyDown, false);
+  function onDocumentKeyDown(event) {
+    let key = event.key;
+    switch (key) {
+      case 'ArrowLeft':
+        phi += 0.1
+        camera.position.x = radio*Math.cos(phi)
+        camera.position.z = radio*Math.sin(phi)
+        break
+      case'ArrowUp':
+        rho += 0.1;
+        camera.position.z = radio*Math.cos(rho)
+        camera.position.y = radio*Math.sin(rho)
+        break
+      case 'ArrowRight':
+        phi -= 0.1
+        camera.position.x = radio*Math.cos(phi)
+        camera.position.z = radio*Math.sin(phi)
+        break
+      case 'ArrowDown':
+        rho -= 0.1;
+        camera.position.z = radio*Math.cos(rho)
+        camera.position.y = radio*Math.sin(rho)
+        break
+      case 'r':
+        phi = Math.acos(x0/radio)
+        rho = Math.acos(z0/radio)
+        camera.position.x = radio*Math.cos(phi)
+        camera.position.y = radio*Math.sin(rho)
+        camera.position.z = radio*Math.sin(phi)
+        break
+      }
+    }
+
 } else {
 
 	const warning = WebGL.getWebGLErrorMessage();
 	document.getElementById( 'container' ).appendChild( warning );
 
 }
-
-// document.addEventListener("keydown", onDocumentKeyDown, false);
-// function onDocumentKeyDown(event) {
-//     var keyCode = event.which;
-//     if (keyCode == 87) {
-//         cube.position.y += ySpeed;
-//     } else if (keyCode == 83) {
-//         cube.position.y -= ySpeed;
-//     } else if (keyCode == 65) {
-//         cube.position.x -= xSpeed;
-//     } else if (keyCode == 68) {
-//         cube.position.x += xSpeed;
-//     } else if (keyCode == 32) {
-//         cube.position.set(0, 0, 0);
-//     }
-// };
