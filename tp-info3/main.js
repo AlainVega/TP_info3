@@ -37,67 +37,102 @@ ejeGeometria = new THREE.BufferGeometry().setFromPoints( points );
 eje = new THREE.Line( ejeGeometria, ejeMaterial );
 scene.add( eje );
 
-// Base rectangular (el piso que sostiene las carreteras)
-const geometry = new THREE.BoxGeometry( 1, 10, 30 );
-const material = new THREE.MeshBasicMaterial( { color: 0x444444 } );
-const baseRectangular = new THREE.Mesh( geometry, material );
+// Base carretera (el piso que sostiene las carreteras)
+let largoBaseCarretera = 30
+let anchoBaseCarretera = 1
+let profundoBaseCarretera = 10
 
-baseRectangular.rotation.y = Math.PI/2 
-baseRectangular.rotation.x = Math.PI/2
+const baseCarreteraGeometria = new THREE.BoxGeometry( largoBaseCarretera, anchoBaseCarretera, profundoBaseCarretera );
+const baseCarreteraMaterial = new THREE.MeshBasicMaterial( { color: 0x444444 } );
+const baseCarretera = new THREE.Mesh( baseCarreteraGeometria, baseCarreteraMaterial );
 
-scene.add( baseRectangular );
+scene.add( baseCarretera );
 
 // Pilares (las torres desde donde salen los cables tensores)
 // Pilar 1
-let pilarGeometria = new THREE.BoxGeometry( 1, 1, 10 ) 
+let largoPilar = 1
+let anchoPilar = 10
+let profundoPilar = 1
+
+let pilarGeometria = new THREE.BoxGeometry( largoPilar, anchoPilar, profundoPilar ) 
 let pilarMaterial = new THREE.MeshBasicMaterial( { color: 0x848484 } );
 let pilar = new THREE.Mesh(pilarGeometria, pilarMaterial)
 
-pilar.translateY(5)
-pilar.rotation.x = Math.PI/2
+pilar.translateY(anchoPilar/2)
+// pilar.rotation.x = Math.PI/2
 pilar.translateX(10)
 
 scene.add( pilar );
 
 // Pilar 2
-pilarGeometria = new THREE.BoxGeometry( 1, 1, 10 ) 
-pilarMaterial = new THREE.MeshBasicMaterial( { color: 0x848484 } );
-pilar = new THREE.Mesh(pilarGeometria, pilarMaterial)
+let pilar2 = new THREE.Mesh(pilarGeometria, pilarMaterial)
 
-pilar.translateY(5)
-pilar.rotation.x = Math.PI/2
-pilar.translateX(-10)
+pilar2.translateY(anchoPilar/2)
+pilar2.translateX(-10)
 
-scene.add( pilar );
+scene.add( pilar2 );
 
 // Base del pilar (la "piramide" de donde se levanta el pilar)
-let basePilarGeometria = new THREE.BoxGeometry( 10, 1, 10 ) 
-let basePilarMaterial = new THREE.MeshBasicMaterial( { color: 0x848484 } );
-let meshBasePilar = new THREE.Mesh(basePilarGeometria, basePilarMaterial)
+let rectanguloGeometria = new THREE.BoxGeometry( 10, 1, 10 ) 
+let rectanguloMaterial = new THREE.MeshBasicMaterial( { color: 0x848484 } );
+const rectanguloMesh = new THREE.Mesh(rectanguloGeometria, rectanguloMaterial)
 
 const basePilar = new THREE.Object3D()
+// const basePilar2 = new THREE.Object3D()
 
-basePilar.translateY(-20)
+basePilar.translateY(-10)
+// basePilar2.translateY(-10)
 
-basePilar.add(meshBasePilar)
+basePilar.add(rectanguloMesh)
+// basePilar2.add(rectanguloMesh)
 
-basePilarGeometria = new THREE.BoxGeometry( 7.5, 1, 7.5 ) 
-basePilarMaterial = new THREE.MeshBasicMaterial( { color: 0x444444 } );
-let meshBasePilar2 = new THREE.Mesh(basePilarGeometria, basePilarMaterial)
+rectanguloGeometria = new THREE.BoxGeometry( 7.5, 1, 7.5 ) 
+rectanguloMaterial = new THREE.MeshBasicMaterial( { color: 0x444444 } );
+const rectanguloMesh2 = new THREE.Mesh(rectanguloGeometria, rectanguloMaterial)
 
-meshBasePilar2.translateY(1)
+rectanguloMesh2.translateY(1)
 
-basePilar.add(meshBasePilar2)
+basePilar.add(rectanguloMesh2)
+// basePilar2.add(rectanguloMesh2)
 
-basePilarGeometria = new THREE.BoxGeometry( 5, 1, 5 ) 
-basePilarMaterial = new THREE.MeshBasicMaterial( { color: 0x848484 } );
-let meshBasePilar3 = new THREE.Mesh(basePilarGeometria, basePilarMaterial)
+rectanguloGeometria = new THREE.BoxGeometry( 5, 1, 5 ) 
+rectanguloMaterial = new THREE.MeshBasicMaterial( { color: 0x848484 } );
+const rectanguloMesh3 = new THREE.Mesh(rectanguloGeometria, rectanguloMaterial)
 
-meshBasePilar3.translateY(2)
+rectanguloMesh3.translateY(2)
 
-basePilar.add(meshBasePilar3)
+basePilar.add(rectanguloMesh3)
+// basePilar2.add(rectanguloMesh3)
+
+// Columnas (las 2 columnas que estan encima de la base y soportan la carretera)
+let columnaGeometria = new THREE.BoxGeometry( 1, 10, 1 ) 
+let columnaMaterial = new THREE.MeshBasicMaterial( { color: 0x434343 } );
+let meshColumna = new THREE.Mesh(columnaGeometria, columnaMaterial)
+
+meshColumna.translateY(3)
+meshColumna.translateX(-1)
+
+basePilar.add(meshColumna)
+// basePilar2.add(meshColumna)
+
+let meshColumna2 = new THREE.Mesh(columnaGeometria, columnaMaterial)
+
+meshColumna2.translateY(3)
+meshColumna2.translateX(1)
+
+basePilar.add(meshColumna2)
+// basePilar2.add(meshColumna2)
+
+basePilar.translateX(10)
+// basePilar2.translateX(-10)
+
+// const meshBasePilar = new THREE.Mesh(basePilarGeometria, basePilarMaterial)
+
+const basePilar2 = basePilar.clone()
+basePilar2.translateX(-20)
 
 scene.add(basePilar)
+scene.add(basePilar2)
 
 const x0 = 10
 const y0 = 5
@@ -118,11 +153,11 @@ function animate() {
   // Para que se mueva solo:
   camera.position.x = radio*Math.cos(phi)
   camera.position.z = radio*Math.sin(phi)
-  phi += 0.01 //plano paralelo a XoZ
+  // phi += 0.01 //plano paralelo a XoZ
 
   camera.position.z = radio*Math.cos(rho)
   camera.position.y = radio*Math.sin(rho)
-  rho += 0.01 // plano paralelo a ZoY
+  // rho += 0.01 // plano paralelo a ZoY
 
   camera.lookAt(new THREE.Vector3(0, 0, 0));
 	renderer.render( scene, camera );
