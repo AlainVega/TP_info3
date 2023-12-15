@@ -7,14 +7,14 @@ const camera = new THREE.PerspectiveCamera( 100, window.innerWidth / window.inne
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight, false );
 document.body.appendChild( renderer.domElement );
-
+///////////////////////////////////////////////////////////////////////////////////////////////
 // Ejes de coordenadas X = Rojo, Y = Verde, Z = Azul
-
+///////////////////////////////////////////////////////////////////////////////////////////////
 // Eje X
 let ejeMaterial = new THREE.LineBasicMaterial( { color: 0xff0000 } );
 let points = [];
 points.push( new THREE.Vector3( 0, 0, 0 ) );
-points.push( new THREE.Vector3( 30, 0, 0 ) );
+points.push( new THREE.Vector3( 50, 0, 0 ) );
 let ejeGeometria = new THREE.BufferGeometry().setFromPoints( points );
 let eje = new THREE.Line( ejeGeometria, ejeMaterial );
 scene.add( eje );
@@ -23,7 +23,7 @@ scene.add( eje );
 ejeMaterial = new THREE.LineBasicMaterial( { color: 0x00ff00 } );
 points = [];
 points.push( new THREE.Vector3( 0, 0, 0 ) );
-points.push( new THREE.Vector3( 0, 30, 0 ) );
+points.push( new THREE.Vector3( 0, 50, 0 ) );
 ejeGeometria = new THREE.BufferGeometry().setFromPoints( points );
 eje = new THREE.Line( ejeGeometria, ejeMaterial );
 scene.add( eje );
@@ -32,13 +32,14 @@ scene.add( eje );
 ejeMaterial = new THREE.LineBasicMaterial( { color: 0x0000ff } );
 points = [];
 points.push( new THREE.Vector3( 0, 0, 0 ) );
-points.push( new THREE.Vector3( 0, 0, 30 ) );
+points.push( new THREE.Vector3( 0, 0, 50 ) );
 ejeGeometria = new THREE.BufferGeometry().setFromPoints( points );
 eje = new THREE.Line( ejeGeometria, ejeMaterial );
 scene.add( eje );
-
+///////////////////////////////////////////////////////////////////////////////////////////////
 // Base carretera (el piso que sostiene las carreteras)
-let largoBaseCarretera = 30
+///////////////////////////////////////////////////////////////////////////////////////////////
+let largoBaseCarretera = 90
 let anchoBaseCarretera = 1
 let profundoBaseCarretera = 10
 
@@ -48,7 +49,9 @@ const baseCarretera = new THREE.Mesh( baseCarreteraGeometria, baseCarreteraMater
 
 scene.add( baseCarretera );
 
+///////////////////////////////////////////////////////////////////////////////////////////////
 // Pilares (las torres desde donde salen los cables tensores)
+///////////////////////////////////////////////////////////////////////////////////////////////
 // Pilar 1
 let largoPilar = 1
 let anchoPilar = 10
@@ -72,7 +75,9 @@ pilar2.translateX(-10)
 
 scene.add( pilar2 );
 
+///////////////////////////////////////////////////////////////////////////////////////////////
 // Base del pilar (la "piramide" de donde se levanta el pilar)
+///////////////////////////////////////////////////////////////////////////////////////////////
 let rectanguloGeometria = new THREE.BoxGeometry( 10, 1, 10 ) 
 let rectanguloMaterial = new THREE.MeshBasicMaterial( { color: 0x848484 } );
 const rectanguloMesh = new THREE.Mesh(rectanguloGeometria, rectanguloMaterial)
@@ -128,7 +133,9 @@ basePilar2.translateX(-20)
 scene.add(basePilar)
 scene.add(basePilar2)
 
-// Soporte
+///////////////////////////////////////////////////////////////////////////////////////////////
+// Soportes (los)
+///////////////////////////////////////////////////////////////////////////////////////////////
 // Base del soporte
 let largoBaseSoporte = 2
 let anchoBaseSoporte = 1
@@ -159,18 +166,77 @@ pilarSoporteMesh.translateY(anchoBaseSoporte/2 + anchoPilarSoporte/2)
 
 soporte.add(pilarSoporteMesh)
 
-scene.add(soporte)
+soporte.translateZ(1.5)
+
+// scene.add(soporte)
 
 const soporte2 = soporte.clone()
 
-soporte2.translateX(3)
+soporte2.translateZ(3)
 
-scene.add(soporte2)
+// scene.add(soporte2)
+
+const soporte3 = soporte.clone()
+
+soporte3.translateZ(-3)
+
+// scene.add(soporte3)
+
+const soporte4 = soporte.clone()
+
+soporte4.translateZ(-6)
+
+// scene.add(soporte4)
+
+const filaSoporte = new THREE.Object3D()
+filaSoporte.add(soporte)
+filaSoporte.add(soporte2)
+filaSoporte.add(soporte3)
+filaSoporte.add(soporte4)
+
+filaSoporte.translateX(25)
+
+// scene.add(filaSoporte)
+
+const filaSoporte2 = filaSoporte.clone()
+
+filaSoporte2.translateX(5)
+
+// scene.add(filaSoporte2)
+
+const filaSoporte3 = filaSoporte.clone()
+
+filaSoporte3.translateX(10)
+
+// scene.add(filaSoporte3)
+
+const filaSoporte4 = filaSoporte.clone()
+
+filaSoporte4.translateX(15)
+
+// scene.add(filaSoporte4)
+
+const grupoSoporte = new THREE.Object3D()
+grupoSoporte.add(filaSoporte)
+grupoSoporte.add(filaSoporte2)
+grupoSoporte.add(filaSoporte3)
+grupoSoporte.add(filaSoporte4)
+
+scene.add(grupoSoporte)
+
+const grupoSoporte2 = grupoSoporte.clone()
+
+// grupoSoporte2.translateX(-75)
+// grupoSoporte2.translateY(15)
+// grupoSoporte2.translateX(-50)
+grupoSoporte2.rotateY(Math.PI)
+
+scene.add(grupoSoporte2)
 
 // Posicion de la camara:
 const x0 = 10
-const y0 = 5
-const z0 = 20
+const y0 = 15
+const z0 = 50
 camera.position.x = x0
 camera.position.y = y0
 camera.position.z = z0
