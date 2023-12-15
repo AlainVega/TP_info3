@@ -1,5 +1,10 @@
+// Desarrolladores:
+// * Alain Vega
+// * Mathias Martinez
+
 import * as THREE from 'three';
 import WebGL from 'three/addons/capabilities/WebGL.js';
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 100, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -233,6 +238,10 @@ grupoSoporte2.rotateY(Math.PI)
 
 scene.add(grupoSoporte2)
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+// Definicion de la posicion de la camara, angulos, animaciones, lookat
+///////////////////////////////////////////////////////////////////////////////////////////////
+
 // Posicion de la camara:
 const x0 = 10
 const y0 = 15
@@ -251,6 +260,10 @@ let rho = Math.acos(z0/radio) // angulo en el plano ZOY
 let animacion = true
 
 camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+// Loop de frames
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 function animate() {
 	requestAnimationFrame( animate );
@@ -278,7 +291,6 @@ if ( WebGL.isWebGLAvailable() ) {
   document.addEventListener("keydown", onDocumentKeyDown, false);
   function onDocumentKeyDown(event) {
     let key = event.key;
-    console.log(key)
     switch (key) {
       case 'ArrowLeft':
         phi += 0.1
