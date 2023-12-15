@@ -242,23 +242,29 @@ camera.position.y = y0
 camera.position.z = z0
 
 // Determinacion de los angulos de la posicion de la camara
-const radio = Math.sqrt( x0*x0 + y0*y0 + z0*z0 )
+const r0 = Math.sqrt( x0*x0 + y0*y0 + z0*z0 )
+let radio = r0
 let phi = Math.acos(x0/radio) // angulo en el plano XOZ
 let rho = Math.acos(z0/radio) // angulo en el plano ZOY
+
+// Booleano para activar la animacion
+let animacion = true
 
 camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 function animate() {
 	requestAnimationFrame( animate );
 
-  // // Para que se mueva solo:
-  // camera.position.x = radio*Math.cos(phi)
-  // camera.position.z = radio*Math.sin(phi)
-  // phi += 0.01 //plano paralelo a XoZ
+  // Para que se mueva solo:
+  if (animacion === true) {
+    camera.position.x = radio*Math.cos(phi)
+    camera.position.z = radio*Math.sin(phi)
+    phi += 0.01 //plano paralelo a XoZ
 
-  // camera.position.z = radio*Math.cos(rho)
-  // camera.position.y = radio*Math.sin(rho)
-  // rho += 0.01 // plano paralelo a ZoY
+    camera.position.z = radio*Math.cos(rho)
+    camera.position.y = radio*Math.sin(rho)
+    rho += 0.01 // plano paralelo a ZoY
+  }
 
   camera.lookAt(new THREE.Vector3(0, 0, 0));
 	renderer.render( scene, camera );
@@ -272,6 +278,7 @@ if ( WebGL.isWebGLAvailable() ) {
   document.addEventListener("keydown", onDocumentKeyDown, false);
   function onDocumentKeyDown(event) {
     let key = event.key;
+    console.log(key)
     switch (key) {
       case 'ArrowLeft':
         phi += 0.1
@@ -294,12 +301,27 @@ if ( WebGL.isWebGLAvailable() ) {
         camera.position.y = radio*Math.sin(rho)
         break
       case 'r':
+        radio = r0
         phi = Math.acos(x0/radio)
         rho = Math.acos(z0/radio)
         camera.position.x = radio*Math.cos(phi)
         camera.position.y = radio*Math.sin(rho)
         camera.position.z = radio*Math.sin(phi)
         break
+      case '+':
+        radio--
+        camera.position.x = radio*Math.cos(phi)
+        camera.position.y = radio*Math.sin(rho)
+        camera.position.z = radio*Math.sin(phi)
+        break
+      case "-":
+        radio++
+        camera.position.x = radio*Math.cos(phi)
+        camera.position.y = radio*Math.sin(rho)
+        camera.position.z = radio*Math.sin(phi)
+        break
+      case "a":
+        animacion = animacion === true ? false : true
       }
     }
 
