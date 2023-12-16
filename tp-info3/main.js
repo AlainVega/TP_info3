@@ -4,22 +4,30 @@
 
 import * as THREE from 'three';
 import WebGL from 'three/addons/capabilities/WebGL.js';
-import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+
+let fov = 100
+let aspect = window.innerWidth / window.innerHeight
+let near = 0.1
+let far = 1000
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera( 100, window.innerWidth / window.innerHeight, 0.1, 1000 );
+const camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
 
 const renderer = new THREE.WebGLRenderer();
-renderer.setSize( window.innerWidth, window.innerHeight, false );
-document.body.appendChild( renderer.domElement );
+renderer.setSize( window.innerWidth, window.innerHeight, false ); 
+renderer.setClearColor( 0x989898, 1); // color del fondo
+document.body.appendChild( renderer.domElement ); // agregar render al DOM
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // Ejes de coordenadas X = Rojo, Y = Verde, Z = Azul
 ///////////////////////////////////////////////////////////////////////////////////////////////
+const largoLinea = 50
+
 // Eje X
 let ejeMaterial = new THREE.LineBasicMaterial( { color: 0xff0000 } );
 let points = [];
 points.push( new THREE.Vector3( 0, 0, 0 ) );
-points.push( new THREE.Vector3( 50, 0, 0 ) );
+points.push( new THREE.Vector3( largoLinea, 0, 0 ) );
 let ejeGeometria = new THREE.BufferGeometry().setFromPoints( points );
 let eje = new THREE.Line( ejeGeometria, ejeMaterial );
 scene.add( eje );
@@ -28,7 +36,7 @@ scene.add( eje );
 ejeMaterial = new THREE.LineBasicMaterial( { color: 0x00ff00 } );
 points = [];
 points.push( new THREE.Vector3( 0, 0, 0 ) );
-points.push( new THREE.Vector3( 0, 50, 0 ) );
+points.push( new THREE.Vector3( 0, largoLinea, 0 ) );
 ejeGeometria = new THREE.BufferGeometry().setFromPoints( points );
 eje = new THREE.Line( ejeGeometria, ejeMaterial );
 scene.add( eje );
@@ -37,19 +45,19 @@ scene.add( eje );
 ejeMaterial = new THREE.LineBasicMaterial( { color: 0x0000ff } );
 points = [];
 points.push( new THREE.Vector3( 0, 0, 0 ) );
-points.push( new THREE.Vector3( 0, 0, 50 ) );
+points.push( new THREE.Vector3( 0, 0, largoLinea ) );
 ejeGeometria = new THREE.BufferGeometry().setFromPoints( points );
 eje = new THREE.Line( ejeGeometria, ejeMaterial );
 scene.add( eje );
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // Base carretera (el piso que sostiene las carreteras)
 ///////////////////////////////////////////////////////////////////////////////////////////////
-let largoBaseCarretera = 90
-let anchoBaseCarretera = 1
-let profundoBaseCarretera = 10
+let largoBaseCarretera = 90 // largo es en X
+let anchoBaseCarretera = 1 // ancho es en Y
+let profundoBaseCarretera = 10 // profundo es en Z
 
 const baseCarreteraGeometria = new THREE.BoxGeometry( largoBaseCarretera, anchoBaseCarretera, profundoBaseCarretera );
-const baseCarreteraMaterial = new THREE.MeshBasicMaterial( { color: 0x444444 } );
+const baseCarreteraMaterial = new THREE.MeshDepthMaterial( { color: 0x444444 } ); //MeshBasicMaterial
 const baseCarretera = new THREE.Mesh( baseCarreteraGeometria, baseCarreteraMaterial );
 
 scene.add( baseCarretera );
@@ -239,7 +247,7 @@ grupoSoporte2.rotateY(Math.PI)
 scene.add(grupoSoporte2)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-// Definicion de la posicion de la camara, angulos, animaciones, lookat
+// Definicion de la posicion de la camara, angulos, animaciones, lookat, luces
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 // Posicion de la camara:
@@ -260,6 +268,9 @@ let rho = Math.acos(z0/radio) // angulo en el plano ZOY
 let animacion = true
 
 camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+const light = new THREE.AmbientLight( { color: 0xffffff, intensity: 1 } ); 
+scene.add( light );
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // Loop de frames
