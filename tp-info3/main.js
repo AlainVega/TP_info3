@@ -375,26 +375,38 @@ if ( WebGL.isWebGLAvailable() ) {
         break
       case '+':
         radio--
-        camera.position.x = radio*Math.cos(phi)
-        camera.position.y = radio*Math.sin(rho)
-        camera.position.z = radio*Math.sin(phi)
+        ajustarZoom(radio)
         break
       case "-":
         radio++
-        camera.position.x = radio*Math.cos(phi)
-        camera.position.y = radio*Math.sin(rho)
-        camera.position.z = radio*Math.sin(phi)
+        ajustarZoom(radio)
         break
       case "a":
         animacion = animacion === true ? false : true
-      }
     }
+  }
+
+  document.addEventListener("wheel", (event) => {
+    const delta = Math.sign(event.deltaY)
+    if (delta === -1) {
+      radio--
+      ajustarZoom(radio)
+    }
+    else if (delta === 1) {
+      radio++
+      ajustarZoom(radio)
+    }
+  })
 
 } else {
-
 	const warning = WebGL.getWebGLErrorMessage();
 	document.getElementById( 'container' ).appendChild( warning );
+}
 
+function ajustarZoom(radio) {
+  camera.position.x = radio*Math.cos(phi)
+  camera.position.y = radio*Math.sin(rho)
+  camera.position.z = radio*Math.sin(phi)
 }
 
 function crearCables() {
