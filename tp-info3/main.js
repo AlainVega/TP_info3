@@ -278,8 +278,9 @@ let radio = r0
 let phi = Math.acos(x0/radio) // angulo en el plano XOZ
 let rho = Math.acos(z0/radio) // angulo en el plano ZOY
 
-// Booleano para activar la animacion
-let animacion = false
+// Booleano para activar las animaciones
+let animacionAutos = false
+let animacionCamara = false
 
 camera.lookAt(new THREE.Vector3(0, 0, 0));
 
@@ -315,20 +316,17 @@ function animate() {
 	requestAnimationFrame( animate );
 
   // Para que se mueva solo:
-  if (animacion === true) {
-    camera.position.x = radio*Math.cos(phi)
-    camera.position.z = radio*Math.sin(phi)
-    phi += 0.01 //plano paralelo a XoZ
-
-    camera.position.z = radio*Math.cos(rho)
-    camera.position.y = radio*Math.sin(rho)
-    rho += 0.01 // plano paralelo a ZoY
-
+  if (animacionAutos === true) {
     if (auto.position.x < largoBaseCarretera/2) {
       auto.position.x += 0.1
       auto2.position.x -= 0.1
     }
-    
+  }
+  
+  if (animacionCamara === true) {
+    camera.position.x = radio*Math.cos(phi)
+    camera.position.z = radio*Math.sin(phi)
+    phi += 0.001 //plano paralelo a XoZ
   }
 
   camera.lookAt(new THREE.Vector3(0, 0, 0));
@@ -382,7 +380,11 @@ if ( WebGL.isWebGLAvailable() ) {
         ajustarZoom(radio)
         break
       case "a":
-        animacion = animacion === true ? false : true
+        animacionAutos = !animacionAutos
+        break
+      case "s":
+        animacionCamara = !animacionCamara
+        break
     }
   }
 
