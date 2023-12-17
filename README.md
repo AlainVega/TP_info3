@@ -1,4 +1,4 @@
 # TP_info3
 
-> [!Nota] 
+> [!NOTE] 
 > Repositorio para el trabajo practico de la materia informatica 3.
