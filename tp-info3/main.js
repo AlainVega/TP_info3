@@ -338,6 +338,19 @@ auto2.position.x = largoBaseCarretera/2
 auto2.position.z = -2.5
 scene.add(auto2);
 
+const auto3 = crearAuto(0xffff00);
+auto3.scale.set(0.1, 0.1, 0.1)
+auto3.position.x = -largoBaseCarretera/2
+auto3.position.z = 3*2.5
+scene.add(auto3);
+
+const auto4 = crearAuto(0xff0000);
+auto4.scale.set(0.1, 0.1, 0.1)
+auto4.rotateY(Math.PI)
+auto4.position.x = largoBaseCarretera/2
+auto4.position.z = -3*2.5
+scene.add(auto4);
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // Plano agua
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -400,11 +413,15 @@ function animate() {
   // Para que se mueva solo:
   if (animacionAutos === true) {
     if (auto.position.x < largoBaseCarretera/2) {
-      auto.position.x += 0.1
-      auto2.position.x -= 0.1
+      auto.position.x += 0.12
+      auto2.position.x -= 0.12
+      auto3.position.x += 0.1
+      auto4.position.x -= 0.1
     } else {
       auto.position.x = -largoBaseCarretera / 2
       auto2.position.x = largoBaseCarretera / 2
+      auto3.position.x = -largoBaseCarretera / 2
+      auto4.position.x = largoBaseCarretera / 2
     }
   }
   
@@ -455,6 +472,8 @@ if ( WebGL.isWebGLAvailable() ) {
         camera.position.z = radio*Math.sin(phi)
         auto.position.x = -largoBaseCarretera/2
         auto2.position.x = largoBaseCarretera/2
+        auto3.position.x = -largoBaseCarretera/2
+        auto4.position.x = largoBaseCarretera/2
         break
       case '+':
         radio--
