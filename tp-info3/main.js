@@ -471,27 +471,32 @@ if ( WebGL.isWebGLAvailable() ) {
 
   document.addEventListener("keydown", onDocumentKeyDown, false);
   function onDocumentKeyDown(event) {
+    let paso = 0.1
     let key = event.key;
     switch (key) {
       case 'ArrowLeft':
-        phi += 0.1
+        phi += paso
         camera.position.x = radio*Math.cos(phi)
         camera.position.z = radio*Math.sin(phi)
         break
       case'ArrowUp':
-        rho += 0.1;
-        camera.position.z = radio*Math.cos(rho)
-        camera.position.y = radio*Math.sin(rho)
+        if ( rho < Math.PI - paso ) {
+          rho += paso;
+          camera.position.z = radio*Math.cos(rho)
+          camera.position.y = radio*Math.sin(rho)
+        }
         break
       case 'ArrowRight':
-        phi -= 0.1
+        phi -= paso
         camera.position.x = radio*Math.cos(phi)
         camera.position.z = radio*Math.sin(phi)
         break
       case 'ArrowDown':
-        rho -= 0.1;
-        camera.position.z = radio*Math.cos(rho)
-        camera.position.y = radio*Math.sin(rho)
+        if ( rho > 0 + paso ) {
+          rho -= paso;
+          camera.position.z = radio*Math.cos(rho)
+          camera.position.y = radio*Math.sin(rho)
+        }
         break
       case 'r':
         radio = r0
