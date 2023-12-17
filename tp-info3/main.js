@@ -4,6 +4,7 @@
 
 import * as THREE from 'three';
 import WebGL from 'three/addons/capabilities/WebGL.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 let fov = 100
 let aspect = window.innerWidth / window.innerHeight
@@ -362,12 +363,35 @@ pastoPlano2.translateY(-10)
 scene.add(pastoPlano2)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
+// Modelos 3D
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+// Modelo de bote sacado de: https://sketchfab.com/3d-models/minecraft-boat-e0d9d3e6cdd1430e83c94bf4998ed391#download
+let boteModelo
+
+const loader = new GLTFLoader()
+loader.load('scene.gltf', function (gltf) {
+  console.log(gltf)
+  const model = gltf.scene
+  boteModelo = gltf.scene
+  model.scale.set(10, 10, 10)
+  model.translateX(20)
+  model.translateY(-10)
+  model.translateZ(10)
+  model.rotateY(Math.PI/2)
+  scene.add(model)
+}, undefined, function (error) {
+  console.error(error)
+})
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 // Loop de frames
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 function animate() {
 	requestAnimationFrame( animate );
 
+  let maximaDistanciaBote = 100
   // Para que se mueva solo:
   if (animacionAutos === true) {
     if (auto.position.x < largoBaseCarretera/2) {
@@ -376,6 +400,11 @@ function animate() {
     } else {
       auto.position.x = -largoBaseCarretera / 2
       auto2.position.x = largoBaseCarretera / 2
+    }
+    if (boteModelo.position.z >= -maximaDistanciaBote) {
+      boteModelo.position.z -= 0.1
+    } else {
+      boteModelo.position.z = maximaDistanciaBote
     }
   }
   

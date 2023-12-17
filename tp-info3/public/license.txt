@@ -1,0 +1,11 @@
+Model Information:
+* title:	Minecraft boat
+* source:	https://sketchfab.com/3d-models/minecraft-boat-e0d9d3e6cdd1430e83c94bf4998ed391
+* author:	vovash (https://sketchfab.com/vladimirsitnic)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Minecraft boat" (https://sketchfab.com/3d-models/minecraft-boat-e0d9d3e6cdd1430e83c94bf4998ed391) by vovash (https://sketchfab.com/vladimirsitnic) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
