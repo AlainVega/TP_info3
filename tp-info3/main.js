@@ -308,8 +308,9 @@ let radio = r0
 let phi = Math.acos(x0/radio) // angulo en el plano XOZ
 let rho = Math.acos(z0/radio) // angulo en el plano ZOY
 
-// Booleano para activar la animacion
-let animacion = false
+// Booleano para activar las animaciones
+let animacionAutos = false
+let animacionCamara = false
 
 camera.lookAt(new THREE.Vector3(0, 0, 0));
 
@@ -321,7 +322,7 @@ const luzDireccional = new THREE.DirectionalLight(0xffffff, 0.8);
 luzDireccional.position.set(-20, 30, 10);
 scene.add(luzDireccional); 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
 // Vehiculos
 ///////////////////////////////////////////////////////////////////////////////////////////////
 const auto = crearAuto(0xff00ff);
@@ -338,6 +339,58 @@ auto2.position.z = -2.5
 scene.add(auto2);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
+// Plano agua
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+const aguaGeometria = new THREE.PlaneGeometry(100, 500)
+aguaGeometria.rotateX(Math.PI/2)
+const aguaTextura = new THREE.TextureLoader().load('Minecraft_Water.png')
+aguaTextura.wrapS = aguaTextura.wrapT = THREE.RepeatWrapping
+aguaTextura.repeat.set(50, 250)
+const aguaMaterial = new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, map: aguaTextura })
+const aguaPlano = new THREE.Mesh(aguaGeometria, aguaMaterial)
+aguaPlano.translateY(-10)
+scene.add(aguaPlano)
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+// Plano tierra
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+const tierraGeometria = new THREE.PlaneGeometry(500, 20)
+tierraGeometria.rotateX(Math.PI/4)
+tierraGeometria.rotateY(Math.PI/2)
+const tierraTextura = new THREE.TextureLoader().load('Minecraft_Dirt.png')
+tierraTextura.wrapS = tierraTextura.wrapT = THREE.RepeatWrapping
+tierraTextura.repeat.set(30, 1)
+const tierraMaterial = new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, map: tierraTextura })
+const tierraPlano = new THREE.Mesh(tierraGeometria, tierraMaterial)
+tierraPlano.translateY(-10)
+tierraPlano.translateX(50)
+scene.add(tierraPlano)
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+// Plano pasto
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+const pastoGeometria = new THREE.PlaneGeometry(500, 200)
+pastoGeometria.rotateY(Math.PI/2)
+pastoGeometria.rotateZ(Math.PI/2)
+const pastoTextura = new THREE.TextureLoader().load('Minecraft_Grass.jpg')
+pastoTextura.wrapS = pastoTextura.wrapT = THREE.RepeatWrapping
+pastoTextura.repeat.set(50, 10)
+const pastoMaterial = new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, map: pastoTextura })
+const pastoPlano = new THREE.Mesh(pastoGeometria, pastoMaterial)
+pastoPlano.translateY(-3)
+pastoPlano.translateX(150)
+scene.add(pastoPlano)
+
+const pastoPlano2 = pastoPlano.clone()
+pastoPlano2.position.set(0, 0, 0)
+pastoPlano2.translateX(-150)
+pastoPlano2.translateY(-10)
+scene.add(pastoPlano2)
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 // Loop de frames
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -345,20 +398,20 @@ function animate() {
 	requestAnimationFrame( animate );
 
   // Para que se mueva solo:
-  if (animacion === true) {
-    camera.position.x = radio*Math.cos(phi)
-    camera.position.z = radio*Math.sin(phi)
-    phi += 0.01 //plano paralelo a XoZ
-
-    camera.position.z = radio*Math.cos(rho)
-    camera.position.y = radio*Math.sin(rho)
-    rho += 0.01 // plano paralelo a ZoY
-
+  if (animacionAutos === true) {
     if (auto.position.x < largoBaseCarretera/2) {
       auto.position.x += 0.1
       auto2.position.x -= 0.1
+    } else {
+      auto.position.x = -largoBaseCarretera / 2
+      auto2.position.x = largoBaseCarretera / 2
     }
-    
+  }
+  
+  if (animacionCamara === true) {
+    camera.position.x = radio*Math.cos(phi)
+    camera.position.z = radio*Math.sin(phi)
+    phi += 0.001 //plano paralelo a XoZ
   }
 
   camera.lookAt(new THREE.Vector3(0, 0, 0));
@@ -405,26 +458,42 @@ if ( WebGL.isWebGLAvailable() ) {
         break
       case '+':
         radio--
-        camera.position.x = radio*Math.cos(phi)
-        camera.position.y = radio*Math.sin(rho)
-        camera.position.z = radio*Math.sin(phi)
+        ajustarZoom(radio)
         break
       case "-":
         radio++
-        camera.position.x = radio*Math.cos(phi)
-        camera.position.y = radio*Math.sin(rho)
-        camera.position.z = radio*Math.sin(phi)
+        ajustarZoom(radio)
         break
       case "a":
-        animacion = animacion === true ? false : true
-      }
+        animacionAutos = !animacionAutos
+        break
+      case "s":
+        animacionCamara = !animacionCamara
+        break
     }
+  }
+
+  document.addEventListener("wheel", (event) => {
+    const delta = Math.sign(event.deltaY)
+    if (delta === -1) {
+      radio--
+      ajustarZoom(radio)
+    }
+    else if (delta === 1) {
+      radio++
+      ajustarZoom(radio)
+    }
+  })
 
 } else {
-
 	const warning = WebGL.getWebGLErrorMessage();
 	document.getElementById( 'container' ).appendChild( warning );
+}
 
+function ajustarZoom(radio) {
+  camera.position.x = radio*Math.cos(phi)
+  camera.position.y = radio*Math.sin(rho)
+  camera.position.z = radio*Math.sin(phi)
 }
 
 function crearCables() {
