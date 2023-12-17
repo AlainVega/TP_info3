@@ -52,7 +52,7 @@ scene.add( eje );
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // Base carretera (el piso que sostiene las autoreteras)
 ///////////////////////////////////////////////////////////////////////////////////////////////
-let largoBaseCarretera = 130 // largo es en X
+let largoBaseCarretera = 200 // largo es en X
 let anchoBaseCarretera = 1 // ancho es en Y
 let profundoBaseCarretera = 10 // profundo es en Z
 
@@ -67,9 +67,9 @@ scene.add( baseCarretera );
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // Pilar 1 
 let largoPilar = 1 // en X
-let anchoPilar = 15// en Y
+let anchoPilar = 20// en Y
 let profundoPilar = 1 // en Z
-let distanciaPilarCentro = 20 // distancia al centro de la carretera (0,0,0)
+let distanciaPilarCentro = 40 // distancia al centro de la carretera (0,0,0)
 
 const pilarGeometria = new THREE.BoxGeometry( largoPilar, anchoPilar, profundoPilar ) 
 const pilarMaterial = new THREE.MeshBasicMaterial( { color: 0x848484 } );
@@ -103,8 +103,6 @@ cablesXNegativo.rotateY(Math.PI)
 
 pilar2.add(cablesXPositivo)
 pilar2.add(cablesXNegativo)
-
-// scene.add(cables)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // Base del pilar (la "piramide" de donde se levanta el pilar)
@@ -173,7 +171,7 @@ scene.add(basePilar2)
 let largoBaseSoporte = 1.5
 let anchoBaseSoporte = 1
 let profundoBaseSoporte = 1.5
-let distanciaSoportesCentro = 45
+let distanciaSoportesCentro = 85
 let distanciaFilasSoporte = 5
 let distanciaSoportes = profundoBaseCarretera/6
 
@@ -269,7 +267,7 @@ scene.add(puente)
 // Posicion de la camara:
 const x0 = 10
 const y0 = 15
-const z0 = 70
+const z0 = 100
 camera.position.x = x0
 camera.position.y = y0
 camera.position.z = z0
@@ -405,7 +403,7 @@ function crearCables() {
 
   let points = [];
   let t = anchoPilar/3
-  let dc = 6 // distancia del cable
+  let dc = 10 // distancia del cable
   let yc = ((anchoPilar - t)/19) + t // y del cable
   let deltaY = (2*(anchoPilar - t) + 19*t)/((anchoPilar - t) + 19*t)
   let xc = Math.sqrt(dc*dc - yc*yc) // x del cable
