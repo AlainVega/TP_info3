@@ -65,26 +65,25 @@ scene.add( baseCarretera );
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // Pilares (las torres desde donde salen los cables tensores)
 ///////////////////////////////////////////////////////////////////////////////////////////////
-// Pilar 1
-let largoPilar = 1
-let anchoPilar = 10
-let profundoPilar = 1
+// Pilar 1 
+let largoPilar = 1 // en X
+let anchoPilar = 10 // en Y
+let profundoPilar = 1 // en Z
+let distanciaPilarCentro = 10 // distancia al centro de la carretera (0,0,0)
 
-let pilarGeometria = new THREE.BoxGeometry( largoPilar, anchoPilar, profundoPilar ) 
-let pilarMaterial = new THREE.MeshBasicMaterial( { color: 0x848484 } );
-let pilar = new THREE.Mesh(pilarGeometria, pilarMaterial)
+const pilarGeometria = new THREE.BoxGeometry( largoPilar, anchoPilar, profundoPilar ) 
+const pilarMaterial = new THREE.MeshBasicMaterial( { color: 0x848484 } );
+const pilar = new THREE.Mesh(pilarGeometria, pilarMaterial)
 
 pilar.translateY(anchoPilar/2)
-// pilar.rotation.x = Math.PI/2
-pilar.translateX(10)
+pilar.translateX(distanciaPilarCentro)
 
 scene.add( pilar );
 
 // Pilar 2
-let pilar2 = new THREE.Mesh(pilarGeometria, pilarMaterial)
+const pilar2 = pilar.clone()
 
-pilar2.translateY(anchoPilar/2)
-pilar2.translateX(-10)
+pilar2.translateX(-2*distanciaPilarCentro)
 
 scene.add( pilar2 );
 
@@ -97,7 +96,7 @@ const rectanguloMesh = new THREE.Mesh(rectanguloGeometria, rectanguloMaterial)
 
 const basePilar = new THREE.Object3D()
 
-basePilar.translateY(-10)
+basePilar.translateY(-distanciaPilarCentro)
 
 basePilar.add(rectanguloMesh)
 
@@ -141,7 +140,7 @@ basePilar.add(meshColumna2)
 basePilar.translateX(10)
 
 const basePilar2 = basePilar.clone()
-basePilar2.translateX(-20)
+basePilar2.translateX(-2*distanciaPilarCentro)
 
 scene.add(basePilar)
 scene.add(basePilar2)
@@ -153,6 +152,9 @@ scene.add(basePilar2)
 let largoBaseSoporte = 2
 let anchoBaseSoporte = 1
 let profundoBaseSoporte = 2
+let distanciaSoportesCentro = 25
+let distanciaFilasSoporte = 5
+let distanciaSoportes = 1.5
 
 let baseSoporteGeometria = new THREE.BoxGeometry( largoBaseSoporte, anchoBaseSoporte, profundoBaseSoporte ) 
 let baseSoporteMaterial = new THREE.MeshBasicMaterial( { color: 0x444444 });
@@ -179,27 +181,19 @@ pilarSoporteMesh.translateY(anchoBaseSoporte/2 + anchoPilarSoporte/2)
 
 soporte.add(pilarSoporteMesh)
 
-soporte.translateZ(1.5)
-
-// scene.add(soporte)
+soporte.translateZ(distanciaSoportes)
 
 const soporte2 = soporte.clone()
 
-soporte2.translateZ(3)
-
-// scene.add(soporte2)
+soporte2.translateZ(2*distanciaSoportes)
 
 const soporte3 = soporte.clone()
 
-soporte3.translateZ(-3)
-
-// scene.add(soporte3)
+soporte3.translateZ(-2*distanciaSoportes)
 
 const soporte4 = soporte.clone()
 
-soporte4.translateZ(-6)
-
-// scene.add(soporte4)
+soporte4.translateZ(-3*distanciaSoportes)
 
 const filaSoporte = new THREE.Object3D()
 filaSoporte.add(soporte)
@@ -207,27 +201,19 @@ filaSoporte.add(soporte2)
 filaSoporte.add(soporte3)
 filaSoporte.add(soporte4)
 
-filaSoporte.translateX(25)
-
-// scene.add(filaSoporte)
+filaSoporte.translateX(distanciaSoportesCentro)
 
 const filaSoporte2 = filaSoporte.clone()
 
-filaSoporte2.translateX(5)
-
-// scene.add(filaSoporte2)
+filaSoporte2.translateX(distanciaFilasSoporte)
 
 const filaSoporte3 = filaSoporte.clone()
 
-filaSoporte3.translateX(10)
-
-// scene.add(filaSoporte3)
+filaSoporte3.translateX(2*distanciaFilasSoporte)
 
 const filaSoporte4 = filaSoporte.clone()
 
-filaSoporte4.translateX(15)
-
-// scene.add(filaSoporte4)
+filaSoporte4.translateX(3*distanciaFilasSoporte)
 
 const grupoSoporte = new THREE.Object3D()
 grupoSoporte.add(filaSoporte)
@@ -239,12 +225,21 @@ scene.add(grupoSoporte)
 
 const grupoSoporte2 = grupoSoporte.clone()
 
-// grupoSoporte2.translateX(-75)
-// grupoSoporte2.translateY(15)
-// grupoSoporte2.translateX(-50)
 grupoSoporte2.rotateY(Math.PI)
 
 scene.add(grupoSoporte2)
+
+// Agrupamos todos objetos del puente en un nuevo objeto puente
+const puente = new THREE.Object3D()
+puente.add(baseCarretera)
+puente.add(pilar)
+puente.add(pilar2)
+puente.add(basePilar)
+puente.add(basePilar2)
+puente.add(grupoSoporte)
+puente.add(grupoSoporte2)
+
+scene.add(puente)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // Definicion de la posicion de la camara, angulos, animaciones, lookat, luces
