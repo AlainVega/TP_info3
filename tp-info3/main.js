@@ -54,11 +54,41 @@ scene.add( eje );
 ///////////////////////////////////////////////////////////////////////////////////////////////
 let largoBaseCarretera = 210 // largo es en X
 let anchoBaseCarretera = 1 // ancho es en Y
-let profundoBaseCarretera = 10 // profundo es en Z
+let profundoBaseCarretera = 20 // profundo es en Z
 
 const baseCarreteraGeometria = new THREE.BoxGeometry( largoBaseCarretera, anchoBaseCarretera, profundoBaseCarretera );
-const baseCarreteraMaterial = new THREE.MeshDepthMaterial( { color: 0x444444 } ); //MeshBasicMaterial
+const baseCarreteraMaterial = new THREE.MeshPhongMaterial( { color: 0x888888 } ); 
 const baseCarretera = new THREE.Mesh( baseCarreteraGeometria, baseCarreteraMaterial );
+
+let distanciaCarril = 2.5
+
+const carreteraGeometria = new THREE.BoxGeometry( largoBaseCarretera, anchoBaseCarretera, profundoBaseCarretera/4.5 );
+const carreteraMaterial = new THREE.MeshPhongMaterial( { color: 0x000000 } ); 
+const carreteraMesh = new THREE.Mesh( carreteraGeometria, carreteraMaterial );
+
+carreteraMesh.translateY(0.1)
+carreteraMesh.translateZ(distanciaCarril)
+
+const carreteraMesh2 = carreteraMesh.clone()
+
+carreteraMesh2.translateZ(2*distanciaCarril)
+
+const carreteraMesh3 = carreteraMesh.clone()
+
+carreteraMesh3.translateZ(-2*distanciaCarril)
+
+const carreteraMesh4 = carreteraMesh.clone()
+
+carreteraMesh4.translateZ(-4*distanciaCarril)
+
+const carreteras = new THREE.Group()
+
+carreteras.add(carreteraMesh)
+carreteras.add(carreteraMesh2)
+carreteras.add(carreteraMesh3)
+carreteras.add(carreteraMesh4)
+
+baseCarretera.add(carreteras)
 
 scene.add( baseCarretera );
 
@@ -72,7 +102,7 @@ let profundoPilar = 1 // en Z
 let distanciaPilarCentro = 40 // distancia al centro de la carretera (0,0,0)
 
 const pilarGeometria = new THREE.BoxGeometry( largoPilar, anchoPilar, profundoPilar ) 
-const pilarMaterial = new THREE.MeshBasicMaterial( { color: 0x848484 } );
+const pilarMaterial = new THREE.MeshPhongMaterial( { color: 0x848484 } );
 const pilar = new THREE.Mesh(pilarGeometria, pilarMaterial)
 
 pilar.translateY(anchoPilar/2)
@@ -110,7 +140,7 @@ pilar2.add(cablesXNegativo)
 let anchoBaseColumna = 9
 
 let rectanguloGeometria = new THREE.BoxGeometry( 10, 1, 10 ) 
-let rectanguloMaterial = new THREE.MeshBasicMaterial( { color: 0x848484 } );
+let rectanguloMaterial = new THREE.MeshPhongMaterial( { color: 0x848484 } );
 const rectanguloMesh = new THREE.Mesh(rectanguloGeometria, rectanguloMaterial)
 
 const basePilar = new THREE.Object3D()
@@ -120,7 +150,7 @@ basePilar.translateY(-anchoBaseColumna)
 basePilar.add(rectanguloMesh)
 
 rectanguloGeometria = new THREE.BoxGeometry( 7.5, 1, 7.5 ) 
-rectanguloMaterial = new THREE.MeshBasicMaterial( { color: 0x444444 } );
+rectanguloMaterial = new THREE.MeshPhongMaterial( { color: 0x444444 } );
 const rectanguloMesh2 = new THREE.Mesh(rectanguloGeometria, rectanguloMaterial)
 
 rectanguloMesh2.translateY(1)
@@ -128,7 +158,7 @@ rectanguloMesh2.translateY(1)
 basePilar.add(rectanguloMesh2)
 
 rectanguloGeometria = new THREE.BoxGeometry( 5, 1, 5 ) 
-rectanguloMaterial = new THREE.MeshBasicMaterial( { color: 0x848484 } );
+rectanguloMaterial = new THREE.MeshPhongMaterial( { color: 0x848484 } );
 const rectanguloMesh3 = new THREE.Mesh(rectanguloGeometria, rectanguloMaterial)
 
 rectanguloMesh3.translateY(2)
@@ -141,7 +171,7 @@ let anchoColumna = 7
 let profundoColumna = 4
 
 let columnaGeometria = new THREE.BoxGeometry( largoColumna, anchoColumna, profundoColumna ) 
-let columnaMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff } );
+let columnaMaterial = new THREE.MeshPhongMaterial( { color: 0xffffff } );
 let meshColumna = new THREE.Mesh(columnaGeometria, columnaMaterial)
 
 meshColumna.translateY(2 + anchoColumna/2) //donde tercer rectangulo altura + la mitad de la columna
@@ -176,7 +206,7 @@ let distanciaFilasSoporte = 5
 let distanciaSoportes = profundoBaseCarretera/6
 
 let baseSoporteGeometria = new THREE.BoxGeometry( largoBaseSoporte, anchoBaseSoporte, profundoBaseSoporte ) 
-let baseSoporteMaterial = new THREE.MeshBasicMaterial( { color: 0x444444 });
+let baseSoporteMaterial = new THREE.MeshPhongMaterial( { color: 0x444444 });
 let baseSoporteMesh = new THREE.Mesh(baseSoporteGeometria, baseSoporteMaterial)
 
 // baseSoporteMesh.translateY(-5)
@@ -193,7 +223,7 @@ let anchoPilarSoporte = 4
 let profundoPilarSoporte = 0.5
 
 let pilarSoporteGeometria = new THREE.BoxGeometry( largoPilarSoporte, anchoPilarSoporte, profundoPilarSoporte ) 
-let pilarSoporteMaterial = new THREE.MeshBasicMaterial( { color: 0x848484 } );
+let pilarSoporteMaterial = new THREE.MeshPhongMaterial( { color: 0x848484 } );
 let pilarSoporteMesh = new THREE.Mesh(pilarSoporteGeometria, pilarSoporteMaterial)
 
 pilarSoporteMesh.translateY(anchoBaseSoporte/2 + anchoPilarSoporte/2)
