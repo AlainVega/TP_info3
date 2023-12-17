@@ -334,6 +334,9 @@ function animate() {
     if (auto.position.x < largoBaseCarretera/2) {
       auto.position.x += 0.1
       auto2.position.x -= 0.1
+    } else {
+      auto.position.x = -largoBaseCarretera / 2
+      auto2.position.x = largoBaseCarretera / 2
     }
   }
   
