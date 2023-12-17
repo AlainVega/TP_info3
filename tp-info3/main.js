@@ -327,7 +327,7 @@ scene.add(aguaPlano)
 // Plano tierra
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-const tierraGeometria = new THREE.PlaneGeometry(500, 20)
+const tierraGeometria = new THREE.PlaneGeometry(500, 19)
 tierraGeometria.rotateX(Math.PI/4)
 tierraGeometria.rotateY(Math.PI/2)
 const tierraTextura = new THREE.TextureLoader().load('Minecraft_Dirt.png')
