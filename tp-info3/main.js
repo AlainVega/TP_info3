@@ -309,7 +309,7 @@ auto2.position.z = -2.5
 scene.add(auto2);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-// Agua
+// Plano agua
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 const aguaGeometria = new THREE.PlaneGeometry(100, 500)
@@ -321,6 +321,44 @@ const aguaMaterial = new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, map: 
 const aguaPlano = new THREE.Mesh(aguaGeometria, aguaMaterial)
 aguaPlano.translateY(-10)
 scene.add(aguaPlano)
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+// Plano tierra
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+const tierraGeometria = new THREE.PlaneGeometry(500, 20)
+tierraGeometria.rotateX(Math.PI/4)
+tierraGeometria.rotateY(Math.PI/2)
+const tierraTextura = new THREE.TextureLoader().load('Minecraft_Dirt.png')
+tierraTextura.wrapS = tierraTextura.wrapT = THREE.RepeatWrapping
+tierraTextura.repeat.set(30, 1)
+const tierraMaterial = new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, map: tierraTextura })
+const tierraPlano = new THREE.Mesh(tierraGeometria, tierraMaterial)
+tierraPlano.translateY(-10)
+tierraPlano.translateX(50)
+scene.add(tierraPlano)
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+// Plano pasto
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+const pastoGeometria = new THREE.PlaneGeometry(500, 200)
+pastoGeometria.rotateY(Math.PI/2)
+pastoGeometria.rotateZ(Math.PI/2)
+const pastoTextura = new THREE.TextureLoader().load('Minecraft_Grass.jpg')
+pastoTextura.wrapS = pastoTextura.wrapT = THREE.RepeatWrapping
+pastoTextura.repeat.set(50, 10)
+const pastoMaterial = new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, map: pastoTextura })
+const pastoPlano = new THREE.Mesh(pastoGeometria, pastoMaterial)
+pastoPlano.translateY(-3)
+pastoPlano.translateX(150)
+scene.add(pastoPlano)
+
+const pastoPlano2 = pastoPlano.clone()
+pastoPlano2.position.set(0, 0, 0)
+pastoPlano2.translateX(-150)
+pastoPlano2.translateY(-10)
+scene.add(pastoPlano2)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // Loop de frames
