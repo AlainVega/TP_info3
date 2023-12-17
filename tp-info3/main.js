@@ -56,43 +56,66 @@ scene.add( eje );
 ///////////////////////////////////////////////////////////////////////////////////////////////
 let largoBaseCarretera = 210 // largo es en X
 let anchoBaseCarretera = 1 // ancho es en Y
-let profundoBaseCarretera = 20 // profundo es en Z
+let profundoBaseCarretera = 25 // profundo es en Z
 
 const baseCarreteraGeometria = new THREE.BoxGeometry( largoBaseCarretera, anchoBaseCarretera, profundoBaseCarretera );
 const baseCarreteraMaterial = new THREE.MeshPhongMaterial( { color: 0x888888 } ); 
 const baseCarretera = new THREE.Mesh( baseCarreteraGeometria, baseCarreteraMaterial );
 
-let distanciaCarril = 2.5
+///////////////////////////
+// Carretera
+///////////////////////////
 
-const carreteraGeometria = new THREE.BoxGeometry( largoBaseCarretera, anchoBaseCarretera, profundoBaseCarretera/4.5 );
-const carreteraMaterial = new THREE.MeshPhongMaterial( { color: 0x000000 } ); 
-const carreteraMesh = new THREE.Mesh( carreteraGeometria, carreteraMaterial );
+const carreteras = crearCarreteraPuente()
+scene.add( carreteras );
 
-carreteraMesh.translateY(0.1)
-carreteraMesh.translateZ(distanciaCarril)
+///////////////////////////
+// Separador vial (separador de carreteras)
+///////////////////////////
+let largoSeparador = largoBaseCarretera
+let anchoSeparador = 1
+let profundoSeparador = 1
 
-const carreteraMesh2 = carreteraMesh.clone()
+const separadorGeometria = new THREE.BoxGeometry( largoSeparador, anchoSeparador, profundoSeparador/4.5 );
+const separadorMaterial = new THREE.MeshPhongMaterial( { color: 0xffffff } ); 
+const separadorMesh = new THREE.Mesh( separadorGeometria, separadorMaterial );
 
-carreteraMesh2.translateZ(2*distanciaCarril)
+separadorMesh.translateY(1)
 
-const carreteraMesh3 = carreteraMesh.clone()
+baseCarretera.add(separadorMesh)
 
-carreteraMesh3.translateZ(-2*distanciaCarril)
+///////////////////////////
+// vallaPetonal (las 2 vallas que delimitan donde pueden caminar las personas)
+///////////////////////////
+let largoValla = largoBaseCarretera
+let anchoValla = 1.5
+let profundoValla = 0.3
 
-const carreteraMesh4 = carreteraMesh.clone()
+const vallaGeometria = new THREE.BoxGeometry(largoValla, anchoValla, profundoValla)
+const vallaMaterial = new THREE.MeshPhongMaterial( {color: 0xffffff } )
+const vallaMesh = new THREE.Mesh(vallaGeometria, vallaMaterial)
 
-carreteraMesh4.translateZ(-4*distanciaCarril)
+const valla = new THREE.Group()
 
-const carreteras = new THREE.Group()
+vallaMesh.translateZ(profundoBaseCarretera/2)
 
-carreteras.add(carreteraMesh)
-carreteras.add(carreteraMesh2)
-carreteras.add(carreteraMesh3)
-carreteras.add(carreteraMesh4)
+const vallaMesh2 = vallaMesh.clone()
 
-baseCarretera.add(carreteras)
+vallaMesh2.translateZ(-1)
 
-scene.add( baseCarretera );
+const valla1 = new THREE.Group()
+
+valla1.add(vallaMesh)
+valla1.add(vallaMesh2)
+
+const valla2 = valla1.clone()
+
+valla2.rotateY(Math.PI)
+
+valla.add(valla1)
+valla.add(valla2)
+
+baseCarretera.add(valla)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // Pilares (las torres desde donde salen los cables tensores)
@@ -327,30 +350,32 @@ scene.add(luzDireccional);
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // Vehiculos
 ///////////////////////////////////////////////////////////////////////////////////////////////
+let distanciaAutos = 3.5
+
 const auto = crearAuto(0xff00ff);
 auto.scale.set(0.1, 0.1, 0.1)
 auto.position.x = -largoBaseCarretera/2
-auto.position.z = 2.5
+auto.position.z = distanciaAutos
 scene.add(auto);
 
 const auto2 = crearAuto(0x00ffff);
 auto2.scale.set(0.1, 0.1, 0.1)
 auto2.rotateY(Math.PI)
 auto2.position.x = largoBaseCarretera/2
-auto2.position.z = -2.5
+auto2.position.z = -distanciaAutos
 scene.add(auto2);
 
 const auto3 = crearAuto(0xffff00);
 auto3.scale.set(0.1, 0.1, 0.1)
 auto3.position.x = -largoBaseCarretera/2
-auto3.position.z = 3*2.5
+auto3.position.z = 2.5*distanciaAutos
 scene.add(auto3);
 
 const auto4 = crearAuto(0xff0000);
 auto4.scale.set(0.1, 0.1, 0.1)
 auto4.rotateY(Math.PI)
 auto4.position.x = largoBaseCarretera/2
-auto4.position.z = -3*2.5
+auto4.position.z = -2.5*distanciaAutos
 scene.add(auto4);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -567,6 +592,26 @@ function ajustarZoom(radio) {
   camera.position.x = radio*Math.cos(phi)
   camera.position.y = radio*Math.sin(rho)
   camera.position.z = radio*Math.sin(phi)
+}
+
+function crearCarreteraPuente() {
+  const carreteraGeometria = new THREE.BoxGeometry( largoBaseCarretera, anchoBaseCarretera, profundoBaseCarretera/2.5);
+  const carreteraMaterial = new THREE.MeshPhongMaterial( { color: 0x000000 } ); 
+  const carreteraMesh = new THREE.Mesh( carreteraGeometria, carreteraMaterial );
+
+  carreteraMesh.translateY(0.1)
+  carreteraMesh.translateZ(profundoBaseCarretera/4)
+
+  const carreteraMesh2 = carreteraMesh.clone()
+
+  carreteraMesh2.translateZ(-2*profundoBaseCarretera/4)
+
+  const carreteras = new THREE.Group()
+
+  carreteras.add(carreteraMesh)
+  carreteras.add(carreteraMesh2)
+
+  return carreteras
 }
 
 function crearCables() {
