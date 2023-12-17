@@ -13,7 +13,7 @@ let far = 1000
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
 
-const renderer = new THREE.WebGLRenderer();
+const renderer = new THREE.WebGLRenderer( { antialias: true } );
 renderer.setSize( window.innerWidth, window.innerHeight, false ); 
 renderer.setClearColor( 0x989898, 1); // color del fondo
 document.body.appendChild( renderer.domElement ); // agregar render al DOM
@@ -50,7 +50,7 @@ ejeGeometria = new THREE.BufferGeometry().setFromPoints( points );
 eje = new THREE.Line( ejeGeometria, ejeMaterial );
 scene.add( eje );
 ///////////////////////////////////////////////////////////////////////////////////////////////
-// Base carretera (el piso que sostiene las carreteras)
+// Base carretera (el piso que sostiene las autoreteras)
 ///////////////////////////////////////////////////////////////////////////////////////////////
 let largoBaseCarretera = 90 // largo es en X
 let anchoBaseCarretera = 1 // ancho es en Y
@@ -260,12 +260,33 @@ let phi = Math.acos(x0/radio) // angulo en el plano XOZ
 let rho = Math.acos(z0/radio) // angulo en el plano ZOY
 
 // Booleano para activar la animacion
-let animacion = true
+let animacion = false
 
 camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-const light = new THREE.AmbientLight( { color: 0xffffff, intensity: 1 } ); 
-scene.add( light );
+// Luces
+const luzAmbiente = new THREE.AmbientLight(0xffffff, 0.6);
+scene.add(luzAmbiente);
+
+const luzDireccional = new THREE.DirectionalLight(0xffffff, 0.8);
+luzDireccional.position.set(-20, 30, 10);
+scene.add(luzDireccional); 
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+// Vehiculos
+///////////////////////////////////////////////////////////////////////////////////////////////
+const auto = crearAuto(0xff00ff);
+auto.scale.set(0.1, 0.1, 0.1)
+auto.position.x = -largoBaseCarretera/2
+auto.position.z = 2.5
+scene.add(auto);
+
+const auto2 = crearAuto(0x00ffff);
+auto2.scale.set(0.1, 0.1, 0.1)
+auto2.rotateY(Math.PI)
+auto2.position.x = largoBaseCarretera/2
+auto2.position.z = -2.5
+scene.add(auto2);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // Loop de frames
@@ -283,6 +304,12 @@ function animate() {
     camera.position.z = radio*Math.cos(rho)
     camera.position.y = radio*Math.sin(rho)
     rho += 0.01 // plano paralelo a ZoY
+
+    if (auto.position.x < largoBaseCarretera/2) {
+      auto.position.x += 0.1
+      auto2.position.x -= 0.1
+    }
+    
   }
 
   camera.lookAt(new THREE.Vector3(0, 0, 0));
@@ -325,6 +352,8 @@ if ( WebGL.isWebGLAvailable() ) {
         camera.position.x = radio*Math.cos(phi)
         camera.position.y = radio*Math.sin(rho)
         camera.position.z = radio*Math.sin(phi)
+        auto.position.x = -largoBaseCarretera/2
+        auto2.position.x = largoBaseCarretera/2
         break
       case '+':
         radio--
@@ -348,4 +377,42 @@ if ( WebGL.isWebGLAvailable() ) {
 	const warning = WebGL.getWebGLErrorMessage();
 	document.getElementById( 'container' ).appendChild( warning );
 
+}
+
+function crearRueda() {
+  const geometria = new THREE.BoxGeometry(12, 12, 33);
+  const material = new THREE.MeshLambertMaterial({ color: 0x333333 });
+  const rueda = new THREE.Mesh(geometria, material);
+  return rueda;
+}
+
+function crearAuto(color) {
+  const auto = new THREE.Group();
+  
+  const ruedaTrasera = crearRueda();
+  ruedaTrasera.position.y = 6;
+  ruedaTrasera.position.x = -18;
+  auto.add(ruedaTrasera);
+  
+  const ruedaDelantera = crearRueda();
+  ruedaDelantera.position.y = 6;  
+  ruedaDelantera.position.x = 18;
+  auto.add(ruedaDelantera);
+
+  const cuerpo = new THREE.Mesh(
+    new THREE.BoxGeometry(60, 15, 30),
+    new THREE.MeshLambertMaterial({ color: color }) // 0x78b14b
+  );
+  cuerpo.position.y = 12;
+  auto.add(cuerpo);
+
+  const cabin = new THREE.Mesh(
+    new THREE.BoxGeometry(33, 12, 24),
+    new THREE.MeshLambertMaterial({ color: 0xffffff })
+  );
+  cabin.position.x = -6;
+  cabin.position.y = 25.5;
+  auto.add(cabin);
+
+  return auto;
 }
