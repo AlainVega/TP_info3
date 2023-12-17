@@ -11,6 +11,7 @@ let near = 0.1
 let far = 1000
 
 const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x7aa8fe);
 const camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
 
 const renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -331,7 +332,7 @@ tierraGeometria.rotateX(Math.PI/4)
 tierraGeometria.rotateY(Math.PI/2)
 const tierraTextura = new THREE.TextureLoader().load('Minecraft_Dirt.png')
 tierraTextura.wrapS = tierraTextura.wrapT = THREE.RepeatWrapping
-tierraTextura.repeat.set(30, 1)
+tierraTextura.repeat.set(150, 5)
 const tierraMaterial = new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, map: tierraTextura })
 const tierraPlano = new THREE.Mesh(tierraGeometria, tierraMaterial)
 tierraPlano.translateY(-10)
@@ -347,7 +348,7 @@ pastoGeometria.rotateY(Math.PI/2)
 pastoGeometria.rotateZ(Math.PI/2)
 const pastoTextura = new THREE.TextureLoader().load('Minecraft_Grass.jpg')
 pastoTextura.wrapS = pastoTextura.wrapT = THREE.RepeatWrapping
-pastoTextura.repeat.set(50, 10)
+pastoTextura.repeat.set(150, 100)
 const pastoMaterial = new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, map: pastoTextura })
 const pastoPlano = new THREE.Mesh(pastoGeometria, pastoMaterial)
 pastoPlano.translateY(-3)
