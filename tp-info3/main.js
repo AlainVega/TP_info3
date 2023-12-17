@@ -414,15 +414,32 @@ let boteModelo
 
 const loader = new GLTFLoader()
 loader.load('scene.gltf', function (gltf) {
-  console.log(gltf)
+  // console.log(gltf)
   const model = gltf.scene
   boteModelo = gltf.scene
   model.scale.set(10, 10, 10)
   model.translateX(20)
   model.translateY(-10)
-  model.translateZ(10)
+  model.translateZ(50)
   model.rotateY(Math.PI/2)
   scene.add(model)
+}, undefined, function (error) {
+  console.error(error)
+})
+
+let boteModelo2
+
+const loader2 = new GLTFLoader()
+loader2.load('scene.gltf', function (gltf) {
+  // console.log(gltf)
+  const model2 = gltf.scene
+  boteModelo2 = gltf.scene
+  model2.scale.set(10, 10, 10)
+  model2.translateX(-20)
+  model2.translateY(-10)
+  model2.translateZ(-50)
+  model2.rotateY(-Math.PI/2)
+  scene.add(model2)
 }, undefined, function (error) {
   console.error(error)
 })
@@ -450,8 +467,10 @@ function animate() {
     }
     if (boteModelo.position.z >= -maximaDistanciaBote) {
       boteModelo.position.z -= 0.1
+      boteModelo2.position.z += 0.1
     } else {
       boteModelo.position.z = maximaDistanciaBote
+      boteModelo2.position.z = -maximaDistanciaBote
     }
   }
   
