@@ -21,7 +21,7 @@ document.body.appendChild( renderer.domElement ); // agregar render al DOM
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // Ejes de coordenadas X = Rojo, Y = Verde, Z = Azul
 ///////////////////////////////////////////////////////////////////////////////////////////////
-const largoLinea = 50
+const largoLinea = 100
 
 // Eje X
 let ejeMaterial = new THREE.LineBasicMaterial( { color: 0xff0000 } );
@@ -52,7 +52,7 @@ scene.add( eje );
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // Base carretera (el piso que sostiene las autoreteras)
 ///////////////////////////////////////////////////////////////////////////////////////////////
-let largoBaseCarretera = 90 // largo es en X
+let largoBaseCarretera = 130 // largo es en X
 let anchoBaseCarretera = 1 // ancho es en Y
 let profundoBaseCarretera = 10 // profundo es en Z
 
@@ -67,9 +67,9 @@ scene.add( baseCarretera );
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // Pilar 1 
 let largoPilar = 1 // en X
-let anchoPilar = 10 // en Y
+let anchoPilar = 15// en Y
 let profundoPilar = 1 // en Z
-let distanciaPilarCentro = 10 // distancia al centro de la carretera (0,0,0)
+let distanciaPilarCentro = 20 // distancia al centro de la carretera (0,0,0)
 
 const pilarGeometria = new THREE.BoxGeometry( largoPilar, anchoPilar, profundoPilar ) 
 const pilarMaterial = new THREE.MeshBasicMaterial( { color: 0x848484 } );
@@ -87,16 +87,37 @@ pilar2.translateX(-2*distanciaPilarCentro)
 
 scene.add( pilar2 );
 
+///////////////////////////////
+// Cables/tensores
+///////////////////////////////
+let cablesXPositivo = crearCables()
+let cablesXNegativo = crearCables()
+cablesXNegativo.rotateY(Math.PI)
+
+pilar.add(cablesXPositivo)
+pilar.add(cablesXNegativo)
+
+cablesXPositivo = crearCables()
+cablesXNegativo = crearCables()
+cablesXNegativo.rotateY(Math.PI)
+
+pilar2.add(cablesXPositivo)
+pilar2.add(cablesXNegativo)
+
+// scene.add(cables)
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // Base del pilar (la "piramide" de donde se levanta el pilar)
 ///////////////////////////////////////////////////////////////////////////////////////////////
+let anchoBaseColumna = 9
+
 let rectanguloGeometria = new THREE.BoxGeometry( 10, 1, 10 ) 
 let rectanguloMaterial = new THREE.MeshBasicMaterial( { color: 0x848484 } );
 const rectanguloMesh = new THREE.Mesh(rectanguloGeometria, rectanguloMaterial)
 
 const basePilar = new THREE.Object3D()
 
-basePilar.translateY(-distanciaPilarCentro)
+basePilar.translateY(-anchoBaseColumna)
 
 basePilar.add(rectanguloMesh)
 
@@ -117,9 +138,9 @@ rectanguloMesh3.translateY(2)
 basePilar.add(rectanguloMesh3)
 
 // Columnas (las 2 columnas que estan encima de la base y soportan la carretera)
-let largoColumna = 1
+let largoColumna = 0.5
 let anchoColumna = 7
-let profundoColumna = 1
+let profundoColumna = 4
 
 let columnaGeometria = new THREE.BoxGeometry( largoColumna, anchoColumna, profundoColumna ) 
 let columnaMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff } );
@@ -137,7 +158,7 @@ meshColumna2.translateX(1)
 
 basePilar.add(meshColumna2)
 
-basePilar.translateX(10)
+basePilar.translateX(distanciaPilarCentro)
 
 const basePilar2 = basePilar.clone()
 basePilar2.translateX(-2*distanciaPilarCentro)
@@ -149,12 +170,12 @@ scene.add(basePilar2)
 // Soportes (los)
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // Base del soporte
-let largoBaseSoporte = 2
+let largoBaseSoporte = 1.5
 let anchoBaseSoporte = 1
-let profundoBaseSoporte = 2
-let distanciaSoportesCentro = 25
+let profundoBaseSoporte = 1.5
+let distanciaSoportesCentro = 45
 let distanciaFilasSoporte = 5
-let distanciaSoportes = 1.5
+let distanciaSoportes = profundoBaseCarretera/6
 
 let baseSoporteGeometria = new THREE.BoxGeometry( largoBaseSoporte, anchoBaseSoporte, profundoBaseSoporte ) 
 let baseSoporteMaterial = new THREE.MeshBasicMaterial( { color: 0x444444 });
@@ -169,9 +190,9 @@ soporte.translateY(-5)
 soporte.add(baseSoporteMesh)
 
 // Pilar/columna del soporte
-let largoPilarSoporte = 1
+let largoPilarSoporte = 0.5
 let anchoPilarSoporte = 4
-let profundoPilarSoporte = 1
+let profundoPilarSoporte = 0.5
 
 let pilarSoporteGeometria = new THREE.BoxGeometry( largoPilarSoporte, anchoPilarSoporte, profundoPilarSoporte ) 
 let pilarSoporteMaterial = new THREE.MeshBasicMaterial( { color: 0x848484 } );
@@ -193,7 +214,7 @@ soporte3.translateZ(-2*distanciaSoportes)
 
 const soporte4 = soporte.clone()
 
-soporte4.translateZ(-3*distanciaSoportes)
+soporte4.translateZ(-4*distanciaSoportes)
 
 const filaSoporte = new THREE.Object3D()
 filaSoporte.add(soporte)
@@ -248,7 +269,7 @@ scene.add(puente)
 // Posicion de la camara:
 const x0 = 10
 const y0 = 15
-const z0 = 50
+const z0 = 70
 camera.position.x = x0
 camera.position.y = y0
 camera.position.z = z0
@@ -318,7 +339,6 @@ function animate() {
 
 if ( WebGL.isWebGLAvailable() ) {
 
-	// Initiate function or other initializations here
 	animate();
 
   document.addEventListener("keydown", onDocumentKeyDown, false);
@@ -379,9 +399,36 @@ if ( WebGL.isWebGLAvailable() ) {
 
 }
 
+function crearCables() {
+  const cables = new THREE.Group()
+  const material = new THREE.LineBasicMaterial( { color: 0x444444 } );
+
+  let points = [];
+  let t = anchoPilar/3
+  let dc = 6 // distancia del cable
+  let yc = ((anchoPilar - t)/19) + t // y del cable
+  let deltaY = (2*(anchoPilar - t) + 19*t)/((anchoPilar - t) + 19*t)
+  let xc = Math.sqrt(dc*dc - yc*yc) // x del cable
+
+  for ( let i = 2; i <= 19; i++) {
+    yc = ((anchoPilar - t)/19)*i + t
+    xc = xc*deltaY
+    dc = Math.sqrt(xc*xc + yc*yc)
+    points.push( new THREE.Vector3( 0, yc, 0 ) );
+    points.push( new THREE.Vector3( xc, 0, 0 ) );
+    const geometria = new THREE.BufferGeometry().setFromPoints( points );
+    const linea = new THREE.Line( geometria, material );
+    cables.add(linea)
+    points = []
+  }
+  
+  cables.translateY(-anchoPilar/2)
+  return cables
+}
+
 function crearRueda() {
   const geometria = new THREE.BoxGeometry(12, 12, 33);
-  const material = new THREE.MeshLambertMaterial({ color: 0x333333 });
+  const material = new THREE.MeshPhongMaterial({ color: 0x333333 });
   const rueda = new THREE.Mesh(geometria, material);
   return rueda;
 }
@@ -401,14 +448,14 @@ function crearAuto(color) {
 
   const cuerpo = new THREE.Mesh(
     new THREE.BoxGeometry(60, 15, 30),
-    new THREE.MeshLambertMaterial({ color: color }) // 0x78b14b
+    new THREE.MeshPhongMaterial({ color: color }) // 0x78b14b
   );
   cuerpo.position.y = 12;
   auto.add(cuerpo);
 
   const cabin = new THREE.Mesh(
     new THREE.BoxGeometry(33, 12, 24),
-    new THREE.MeshLambertMaterial({ color: 0xffffff })
+    new THREE.MeshPhongMaterial({ color: 0xffffff })
   );
   cabin.position.x = -6;
   cabin.position.y = 25.5;
