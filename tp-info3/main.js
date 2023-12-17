@@ -214,13 +214,11 @@ let baseSoporteMesh = new THREE.Mesh(baseSoporteGeometria, baseSoporteMaterial)
 
 const soporte = new THREE.Object3D()
 
-soporte.translateY(-5)
-
 soporte.add(baseSoporteMesh)
 
 // Pilar/columna del soporte
 let largoPilarSoporte = 0.5
-let anchoPilarSoporte = 4
+let anchoPilarSoporte = 8
 let profundoPilarSoporte = 0.5
 
 let pilarSoporteGeometria = new THREE.BoxGeometry( largoPilarSoporte, anchoPilarSoporte, profundoPilarSoporte ) 
@@ -228,6 +226,8 @@ let pilarSoporteMaterial = new THREE.MeshPhongMaterial( { color: 0x848484 } );
 let pilarSoporteMesh = new THREE.Mesh(pilarSoporteGeometria, pilarSoporteMaterial)
 
 pilarSoporteMesh.translateY(anchoBaseSoporte/2 + anchoPilarSoporte/2)
+
+soporte.translateY(-anchoPilarSoporte -anchoBaseSoporte)
 
 soporte.add(pilarSoporteMesh)
 
