@@ -87,7 +87,7 @@ baseCarretera.add(separadorMesh)
 // vallaPetonal (las 2 vallas que delimitan donde pueden caminar las personas)
 ///////////////////////////
 let largoValla = largoBaseCarretera
-let anchoValla = 1.5
+let anchoValla = 3.5
 let profundoValla = 0.3
 
 const vallaGeometria = new THREE.BoxGeometry(largoValla, anchoValla, profundoValla)
