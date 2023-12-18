@@ -12,12 +12,12 @@ let near = 0.1
 let far = 1000
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x7aa8fe);
+scene.background = new THREE.Color(0x0197f6);
 const camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
 
 const renderer = new THREE.WebGLRenderer( { antialias: true } );
 renderer.setSize( window.innerWidth, window.innerHeight, false ); 
-renderer.setClearColor( 0x989898, 1); // color del fondo
+renderer.setClearColor( 0x989898, 1 ); // color del fondo
 document.body.appendChild( renderer.domElement ); // agregar render al DOM
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
