@@ -31,6 +31,15 @@ sudo apt install curl
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 ```
 
+2. Instalar Node.js y npm:
+```
+nvm install --lts
+```
+
+> [!TIP]
+> Verificar la instalacion ejecutando: `node --version` y `npm --version`
+
+
 2. Instalar git:
 ```
 sudo apt-get install git
