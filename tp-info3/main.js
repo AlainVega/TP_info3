@@ -627,7 +627,7 @@ if ( WebGL.isWebGLAvailable() ) {
 
   document.addEventListener("wheel", (event) => {
     const delta = Math.sign(event.deltaY)
-    if (delta === -1) {
+    if (delta === -1 && radio > 0) {
       radio--
       ajustarZoom(radio)
     }
