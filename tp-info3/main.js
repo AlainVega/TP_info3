@@ -431,6 +431,22 @@ pastoPlano2.translateY(-10)
 scene.add(pastoPlano2)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
+// Camino tierra
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+const carreteraTierra = carreteras.clone()
+carreteraTierra.scale.x = 0.5
+carreteraTierra.translateX(-190)
+carreteraTierra.translateY(-10)
+scene.add(carreteraTierra)
+
+const carreteraTierra2 = carreteras.clone()
+carreteraTierra2.scale.x = 0.5
+carreteraTierra2.translateX(170)
+carreteraTierra2.translateY(-3)
+scene.add(carreteraTierra2)
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 // Modelos 3D
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -439,7 +455,6 @@ let boteModelo
 
 const loader = new GLTFLoader()
 loader.load('scene.gltf', function (gltf) {
-  // console.log(gltf)
   const model = gltf.scene
   boteModelo = gltf.scene
   model.scale.set(10, 10, 10)
@@ -456,7 +471,6 @@ let boteModelo2
 
 const loader2 = new GLTFLoader()
 loader2.load('scene.gltf', function (gltf) {
-  // console.log(gltf)
   const model2 = gltf.scene
   boteModelo2 = gltf.scene
   model2.scale.set(10, 10, 10)
