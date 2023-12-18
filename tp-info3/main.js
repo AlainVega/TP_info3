@@ -63,11 +63,10 @@ const baseCarreteraMaterial = new THREE.MeshPhongMaterial( { color: 0x888888 } )
 const baseCarretera = new THREE.Mesh( baseCarreteraGeometria, baseCarreteraMaterial );
 
 ///////////////////////////
-// Carretera
+// Carretera puente
 ///////////////////////////
-
 const carreteras = crearCarreteraPuente()
-scene.add( carreteras );
+baseCarretera.add( carreteras );
 
 ///////////////////////////
 // Separador vial (separador de carreteras)
@@ -116,6 +115,58 @@ valla.add(valla1)
 valla.add(valla2)
 
 baseCarretera.add(valla)
+
+////////////////////////////
+// Camino tierra
+///////////////////////////
+let distanciaCaminoTierraAsuncionCentro = largoBaseCarretera/2 + 90
+let distanciaCaminoTierraChacoCentro = largoBaseCarretera/2 + 100
+let asuncionY = -3
+let chacoY = -10
+
+const carreteraTierra = baseCarretera.clone()
+carreteraTierra.scale.x = 0.5
+carreteraTierra.translateX(-distanciaCaminoTierraChacoCentro - largoBaseCarretera*(0.5/2))
+carreteraTierra.translateY(chacoY)
+scene.add(carreteraTierra)
+
+const carreteraTierra2 = baseCarretera.clone()
+carreteraTierra2.scale.x = 0.5
+carreteraTierra2.translateX(distanciaCaminoTierraAsuncionCentro + largoBaseCarretera*(0.5/2))
+carreteraTierra2.translateY(asuncionY)
+scene.add(carreteraTierra2)
+
+///////////////////////////
+// Carretera pendiente subida/bajada (del puente al camino tierra)
+///////////////////////////
+const carreteraPendiente = baseCarretera.clone()
+
+const largoCarreteraInclinada = Math.sqrt(
+  (largoBaseCarretera/2 - distanciaCaminoTierraAsuncionCentro)**2 + (0 - asuncionY)**2)
+
+carreteraPendiente.scale.x = largoCarreteraInclinada/largoBaseCarretera
+
+carreteraPendiente.translateX((largoBaseCarretera/2 + distanciaCaminoTierraAsuncionCentro)/2)
+carreteraPendiente.translateY((0 + asuncionY)/2)
+carreteraPendiente.rotateZ(-Math.acos( (distanciaCaminoTierraAsuncionCentro - largoBaseCarretera/2)
+  /largoCarreteraInclinada ))
+
+scene.add(carreteraPendiente)
+
+const carreteraPendiente2 = baseCarretera.clone()
+
+const largoCarreteraInclinada2 = Math.sqrt(
+  (largoBaseCarretera/2 - distanciaCaminoTierraChacoCentro)**2 + (0 - chacoY)**2)
+
+carreteraPendiente2.scale.x = largoCarreteraInclinada2/largoBaseCarretera
+
+carreteraPendiente2.translateX(-(largoBaseCarretera/2 + distanciaCaminoTierraChacoCentro)/2)
+carreteraPendiente2.translateY((0 + chacoY)/2)
+carreteraPendiente2.rotateZ(Math.acos( (distanciaCaminoTierraChacoCentro - largoBaseCarretera/2)
+  /largoCarreteraInclinada2 ))
+
+scene.add(carreteraPendiente2)
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // Pilares (las torres desde donde salen los cables tensores)
@@ -233,8 +284,6 @@ let distanciaSoportes = profundoBaseCarretera/6
 let baseSoporteGeometria = new THREE.BoxGeometry( largoBaseSoporte, anchoBaseSoporte, profundoBaseSoporte ) 
 let baseSoporteMaterial = new THREE.MeshPhongMaterial( { color: 0x444444 });
 let baseSoporteMesh = new THREE.Mesh(baseSoporteGeometria, baseSoporteMaterial)
-
-// baseSoporteMesh.translateY(-5)
 
 const soporte = new THREE.Object3D()
 
@@ -429,22 +478,6 @@ pastoPlano2.position.set(0, 0, 0)
 pastoPlano2.translateX(-150)
 pastoPlano2.translateY(-10)
 scene.add(pastoPlano2)
-
-///////////////////////////////////////////////////////////////////////////////////////////////
-// Camino tierra
-///////////////////////////////////////////////////////////////////////////////////////////////
-
-const carreteraTierra = carreteras.clone()
-carreteraTierra.scale.x = 0.5
-carreteraTierra.translateX(-190)
-carreteraTierra.translateY(-10)
-scene.add(carreteraTierra)
-
-const carreteraTierra2 = carreteras.clone()
-carreteraTierra2.scale.x = 0.5
-carreteraTierra2.translateX(170)
-carreteraTierra2.translateY(-3)
-scene.add(carreteraTierra2)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // Modelos 3D
