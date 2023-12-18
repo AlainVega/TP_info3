@@ -686,13 +686,13 @@ function crearCables() {
   const material = new THREE.LineBasicMaterial( { color: 0x444444 } );
 
   let points = [];
-  let t = anchoPilar/3
-  let dc = 10 // distancia del cable
-  let yc = ((anchoPilar - t)/19) + t // y del cable
-  let deltaY = (2*(anchoPilar - t) + 19*t)/((anchoPilar - t) + 19*t)
-  let xc = Math.sqrt(dc*dc - yc*yc) // x del cable
+  let t = anchoPilar/3 // distancia del primer cable a la base (cateto altura)
+  let dc = 10 // longitud del cable (hipotenusa)
+  let yc = t // y del i-esimo cable, inicialmente t
+  let deltaY = (2*(anchoPilar - t) + 19*t)/((anchoPilar - t) + 19*t) // distancia entre dos cables consecutivos (catetos altura)
+  let xc = Math.sqrt(dc*dc - yc*yc) // x del cable (cateto base)
 
-  for ( let i = 2; i <= 19; i++) {
+  for (let i = 1; i <= 19; i++) {
     yc = ((anchoPilar - t)/19)*i + t
     xc = xc*deltaY
     dc = Math.sqrt(xc*xc + yc*yc)
