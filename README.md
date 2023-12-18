@@ -40,7 +40,7 @@ nvm install --lts
 > Verificar la instalacion ejecutando: `node --version` y `npm --version`
 
 
-2. Instalar git:
+3. Instalar git:
 ```
 sudo apt-get install git
 ```
@@ -49,7 +49,7 @@ sudo apt-get install git
 > Verificar la instalacion ejecutando: `git --version`
 
 
-3. Clonar el repositorio e ir a la carpeta base:
+4. Clonar el repositorio e ir a la carpeta base:
 ```
 git clone https://github.com/AlainVega/TP_info3.git
 ```
@@ -57,17 +57,17 @@ git clone https://github.com/AlainVega/TP_info3.git
 cd TP_info3/tp-info3/
 ```
 
-4. Instalacion de dependencias:
+5. Instalacion de dependencias:
 ```
 npm install
 ```
 
-5. Ejecutar el proyecto:
+6. Ejecutar el proyecto:
 ```
 npm run dev
 ```
 
-6. Visualizar el proyecto en el navegador yendo a la url: `http://localhost:5173/`
+7. Visualizar el proyecto en el navegador yendo a la url: `http://localhost:5173/`
 
 > [!NOTE] 
 > Repositorio para el trabajo practico de la materia informatica 3 (computacion grafica).
