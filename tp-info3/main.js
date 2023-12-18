@@ -123,16 +123,17 @@ let distanciaCaminoTierraAsuncionCentro = largoBaseCarretera/2 + 90
 let distanciaCaminoTierraChacoCentro = largoBaseCarretera/2 + 100
 let asuncionY = -3
 let chacoY = -10
+let largoCarreteraPasto = 0.2
 
 const carreteraTierra = baseCarretera.clone()
-carreteraTierra.scale.x = 0.5
-carreteraTierra.translateX(-distanciaCaminoTierraChacoCentro - largoBaseCarretera*(0.5/2))
+carreteraTierra.scale.x = largoCarreteraPasto
+carreteraTierra.translateX(-distanciaCaminoTierraChacoCentro - largoBaseCarretera*(largoCarreteraPasto/2))
 carreteraTierra.translateY(chacoY)
 scene.add(carreteraTierra)
 
 const carreteraTierra2 = baseCarretera.clone()
-carreteraTierra2.scale.x = 0.5
-carreteraTierra2.translateX(distanciaCaminoTierraAsuncionCentro + largoBaseCarretera*(0.5/2))
+carreteraTierra2.scale.x = largoCarreteraPasto
+carreteraTierra2.translateX(distanciaCaminoTierraAsuncionCentro + largoBaseCarretera*(largoCarreteraPasto/2))
 carreteraTierra2.translateY(asuncionY)
 scene.add(carreteraTierra2)
 
@@ -141,13 +142,16 @@ scene.add(carreteraTierra2)
 ///////////////////////////
 const carreteraPendiente = baseCarretera.clone()
 
+// largo del segmento con pendiente
 const largoCarreteraInclinada = Math.sqrt(
   (largoBaseCarretera/2 - distanciaCaminoTierraAsuncionCentro)**2 + (0 - asuncionY)**2)
-
 carreteraPendiente.scale.x = largoCarreteraInclinada/largoBaseCarretera
 
+// trasladarse al punto medio de donde termina el puente y empieza la carretera en el pasto
 carreteraPendiente.translateX((largoBaseCarretera/2 + distanciaCaminoTierraAsuncionCentro)/2)
 carreteraPendiente.translateY((0 + asuncionY)/2)
+
+// angulo de giro
 carreteraPendiente.rotateZ(-Math.acos( (distanciaCaminoTierraAsuncionCentro - largoBaseCarretera/2)
   /largoCarreteraInclinada ))
 
@@ -155,13 +159,16 @@ scene.add(carreteraPendiente)
 
 const carreteraPendiente2 = baseCarretera.clone()
 
+// largo del segmento con pendiente
 const largoCarreteraInclinada2 = Math.sqrt(
   (largoBaseCarretera/2 - distanciaCaminoTierraChacoCentro)**2 + (0 - chacoY)**2)
-
 carreteraPendiente2.scale.x = largoCarreteraInclinada2/largoBaseCarretera
 
+// trasladarse al punto medio de donde termina el puente y empieza la carretera en el pasto
 carreteraPendiente2.translateX(-(largoBaseCarretera/2 + distanciaCaminoTierraChacoCentro)/2)
 carreteraPendiente2.translateY((0 + chacoY)/2)
+
+// angulo de giro
 carreteraPendiente2.rotateZ(Math.acos( (distanciaCaminoTierraChacoCentro - largoBaseCarretera/2)
   /largoCarreteraInclinada2 ))
 
