@@ -65,7 +65,7 @@ const baseCarretera = new THREE.Mesh( baseCarreteraGeometria, baseCarreteraMater
 ///////////////////////////
 // Carretera puente
 ///////////////////////////
-const carreteras = crearCarreteraPuente()
+const carreteras = crearCarretera()
 baseCarretera.add( carreteras );
 
 ///////////////////////////
@@ -359,18 +359,6 @@ grupoSoporte2.rotateY(Math.PI)
 
 scene.add(grupoSoporte2)
 
-// Agrupamos todos objetos del puente en un nuevo objeto puente
-const puente = new THREE.Object3D()
-puente.add(baseCarretera)
-puente.add(pilar)
-puente.add(pilar2)
-puente.add(basePilar)
-puente.add(basePilar2)
-puente.add(grupoSoporte)
-puente.add(grupoSoporte2)
-
-scene.add(puente)
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // Definicion de la posicion de la camara, angulos, animaciones, lookat, luces
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -408,31 +396,48 @@ scene.add(luzDireccional);
 ///////////////////////////////////////////////////////////////////////////////////////////////
 let distanciaAutos = 3.5
 
+const autos = new THREE.Group()
+
 const auto = crearAuto(0xff00ff);
 auto.scale.set(0.1, 0.1, 0.1)
 auto.position.x = -largoBaseCarretera/2
 auto.position.z = distanciaAutos
-scene.add(auto);
+autos.add(auto);
 
 const auto2 = crearAuto(0x00ffff);
 auto2.scale.set(0.1, 0.1, 0.1)
 auto2.rotateY(Math.PI)
 auto2.position.x = largoBaseCarretera/2
 auto2.position.z = -distanciaAutos
-scene.add(auto2);
+autos.add(auto2);
 
 const auto3 = crearAuto(0xffff00);
 auto3.scale.set(0.1, 0.1, 0.1)
 auto3.position.x = -largoBaseCarretera/2
 auto3.position.z = 2.5*distanciaAutos
-scene.add(auto3);
+autos.add(auto3);
 
 const auto4 = crearAuto(0xff0000);
 auto4.scale.set(0.1, 0.1, 0.1)
 auto4.rotateY(Math.PI)
 auto4.position.x = largoBaseCarretera/2
 auto4.position.z = -2.5*distanciaAutos
-scene.add(auto4);
+autos.add(auto4);
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+// Agrupamos todos objetos del puente en un nuevo objeto puente
+///////////////////////////////////////////////////////////////////////////////////////////////
+const puente = new THREE.Object3D()
+puente.add(baseCarretera)
+puente.add(pilar)
+puente.add(pilar2)
+puente.add(basePilar)
+puente.add(basePilar2)
+puente.add(grupoSoporte)
+puente.add(grupoSoporte2)
+puente.add(autos)
+
+scene.add(puente)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // Plano agua
@@ -648,13 +653,21 @@ function ajustarZoom(radio) {
   camera.position.z = radio*Math.sin(phi)
 }
 
-function crearCarreteraPuente() {
+function crearCarretera() {
   const carreteraGeometria = new THREE.BoxGeometry( largoBaseCarretera, anchoBaseCarretera, profundoBaseCarretera/2.5);
   const carreteraMaterial = new THREE.MeshPhongMaterial( { color: 0x000000 } ); 
   const carreteraMesh = new THREE.Mesh( carreteraGeometria, carreteraMaterial );
 
   carreteraMesh.translateY(0.1)
   carreteraMesh.translateZ(profundoBaseCarretera/4)
+
+  const franjaGeometeria = new THREE.BoxGeometry( largoBaseCarretera, 0.1, profundoBaseCarretera/40);
+  const franjaMaterial = new THREE.MeshLambertMaterial( { color: 0xffffff } )
+  const franjaMesh = new THREE.Mesh(franjaGeometeria, franjaMaterial)
+
+  carreteraMesh.add(franjaMesh)
+
+  franjaMesh.translateY(0.5)
 
   const carreteraMesh2 = carreteraMesh.clone()
 
