@@ -7,9 +7,17 @@
 			body { margin: 0; }
 		</style>
 		<link rel="stylesheet" href="style.css">
+		<script type="importmap">
+			{
+			  "imports": {
+					"three": "https://unpkg.com/three@v0.159.0/build/three.module.js",
+					"three/addons/": "https://unpkg.com/three@v0.159.0/examples/jsm/"
+				}
+			}
+		</script>
 	</head>
 	<body>
-		<script type="module" src="/main.js"></script>
+		<script type="module" src="main.js"></script>
 		<div id="info">
 			<h3 id="titulo">Puente héroes del chaco</h3>
 			<p id="inter">Interactividad:</p>
