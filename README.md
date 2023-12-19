@@ -15,6 +15,8 @@ Su nombre es un homenaje a los combatientes de la Guerra del Chaco.
 > [!IMPORTANT]  
 > Para distros basadas en ubuntu:
 
+Hay 2 maneras, pero para ambas los pasos bases son:
+
 1. Instalar curl:
 ```
 sudo apt update && sudo apt upgrade
@@ -57,6 +59,8 @@ git clone https://github.com/AlainVega/TP_info3.git
 cd TP_info3/tp-info3/
 ```
 
+## Con npm run dev:
+
 5. Instalacion de dependencias:
 ```
 npm install
@@ -68,6 +72,18 @@ npm run dev
 ```
 
 7. Visualizar el proyecto en el navegador yendo a la url: `http://localhost:5173/`
+
+## Con npx serve (utilizando un CDN):
+
+5. Ejecutar el comando:
+```
+npx serve
+```
+
+> [!NOTE] 
+> Si no se tiene el paquete serve, se instalara automaticamente.
+
+6. Visualizar el proyecto en el navegador yendo a la url: `http://localhost:3000/`
 
 > [!NOTE] 
 > Repositorio para el trabajo practico de la materia informatica 3 (computacion grafica).
